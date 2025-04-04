@@ -26,9 +26,7 @@
 	onMount(loadKeys);
 </script>
 
-<!-- Component's main container div -->
 <div class="key-list-container">
-	<!-- Removed H2, title handled by parent -->
 	<div class="action-bar">
 		<button class="button button-primary" onclick={onGenerate}>
 			<Plus size={18} class="icon" /> Generate New Key Pair

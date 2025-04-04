@@ -11,9 +11,9 @@
 
 	// --- State Management ---
 	type View = 'list' | 'generate' | 'details' | 'sign' | 'verify';
-	let currentView: View = 'list';
-	let selectedKeyId: string | null = null;
-	let title = 'Key Management'; // Dynamic title
+	let currentView = $state<View>('list'); 
+	let selectedKeyId = $state<string | null>(null); 
+	let title = $state('Key Management'); 
 
 	// --- Navigation Functions ---
 	function showList() {
@@ -57,18 +57,17 @@
 	</header>
 
 	<nav class="app-nav">
-		<!-- Use classes for styling -->
 		<button
 			class="button nav-button"
-			on:click={showList}
+			onclick={showList}
 			class:active={currentView === 'list' ||
 				currentView === 'generate' ||
 				currentView === 'details'}>Manage Keys</button
 		>
-		<button class="button nav-button" on:click={showSign} class:active={currentView === 'sign'}
+		<button class="button nav-button" onclick={showSign} class:active={currentView === 'sign'}
 			>Sign Document</button
 		>
-		<button class="button nav-button" on:click={showVerify} class:active={currentView === 'verify'}
+		<button class="button nav-button" onclick={showVerify} class:active={currentView === 'verify'}
 			>Verify Signature</button
 		>
 	</nav>
@@ -89,7 +88,7 @@
 
 	<footer class="app-footer">
 		<!-- Optional footer -->
-		<p>© {new Date().getFullYear()} Your App Name</p>
+		<p>© {new Date().getFullYear()} Sigust</p>
 	</footer>
 </div>
 

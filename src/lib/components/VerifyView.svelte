@@ -100,7 +100,6 @@
 </script>
 
 <div class="verify-view-container">
-	<!-- Removed H2 -->
 	<form onsubmitcapture={verify}>
 		<div class="form-group">
 			<label for="document" class="form-label">Original Document:</label>
