@@ -1,0 +1,63 @@
+[package]
+name = "app"
+version = "0.1.0"
+description = "A Tauri App"
+authors = ["you"]
+license = ""
+repository = ""
+edition = "2021"
+rust-version = "1.77.2"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.1.0", features = [] }
+
+[dependencies]
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+log = "0.4"
+tauri = { version = "2.4.0", features = [] }
+tauri-plugin-log = "2.0.0-rc"
+tauri-plugin-dialog = "2"
+
+# ring = "0.17" # 使用最新兼容版本
+rand = "0.9"
+hex = "0.4" # 用于编码/解码方便查看
+env_logger = "0.11" # 或其他日志实现
+anyhow = "1.0"
+keyring = "3.6" # 用于安全存储密码
+uuid = { version = "1.7", features = ["v4", "serde"] } # 用于生成唯一 Key ID
+chrono = { version = "0.4", features = ["serde"] } # 用于时间戳
+# pem = "3.0" # 用于处理 PEM 格式密钥
+base64 = "0.22" # 用于 PEM 体编码
+
+# RSA, needs features for padding, hashing alg, key formats
+rsa = { version = "0.9", features = ["sha2"] }
+# ECDSA P-256
+p256 = { version = "0.13", features = ["ecdsa", "pkcs8"] } # Enable ecdsa and pkcs8 features
+# Ed25519 (using the signature wrapper crate is often convenient)
+ed25519-dalek = { version = "2", features = ["pkcs8", "rand_core"] } # Enable pkcs8 feature
+# SHA-2 Hashing (used by RSA padding and standalone)
+sha2 = "0.10"
+# Core traits (Digest, Signature, Aead, etc.)
+digest = "0.10"
+signature = { version = "2.1", features = ["std"] } # Base traits for Signer/Verifier
+# PKCS#8 key format traits & types
+pkcs8 = { version = "0.10", features = ["alloc", "pem", "pkcs5"] } # Needs alloc, pem for der/pem handling
+# Modern PEM Handling crate
+pem-rfc7468 = { version = "0.7", features = ["alloc"] } # Needs alloc, pkcs8 integration
+# AES-GCM AEAD implementation
+aes-gcm = "0.10"
+# AEAD (Authenticated Encryption with Associated Data) traits
+aead = { version = "0.5", features = ["alloc"] }
+# PBKDF2 implementation
+pbkdf2 = { version = "0.12", features = ["simple"] } # Simple feature avoids pulling many crypto backends
+# HMAC (needed for PBKDF2)
+hmac = "0.12"
+getrandom = "0.3" # Often needed by rand or crypto crates
+derive_more = { version = "2.0.1", features = ["display", "from_str"] }
