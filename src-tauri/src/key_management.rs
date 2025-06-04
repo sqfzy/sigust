@@ -255,6 +255,7 @@ pub fn get_metadata_path(app_handle: &tauri::AppHandle) -> Result<PathBuf> {
         .path()
         .app_data_dir()
         .context("Failed to get app data directory")?;
+    log::debug!("App data directory: {:?}", data_dir);
     if !data_dir.exists() {
         fs::create_dir_all(&data_dir).context("Failed to create app data directory")?;
     }

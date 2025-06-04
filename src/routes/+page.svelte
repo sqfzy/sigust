@@ -8,52 +8,53 @@
 	import KeyDetailsView from '$lib/components/KeyDetailsView.svelte';
 	import SignView from '$lib/components/SignView.svelte';
 	import VerifyView from '$lib/components/VerifyView.svelte';
+	import { navTitle } from '$lib/shared';
 
 	// --- State Management ---
 	type View = 'list' | 'generate' | 'details' | 'sign' | 'verify';
-	let currentView = $state<View>('list'); 
-	let selectedKeyId = $state<string | null>(null); 
-	let title = $state('Key Management'); 
+	let currentView = $state<View>('list');
+	let selectedKeyId = $state<string | null>(null);
+	// let title = $state('Key Management');
 
 	// --- Navigation Functions ---
 	function showList() {
 		currentView = 'list';
 		selectedKeyId = null;
-		title = 'Key Management';
+		$navTitle = 'Key Management';
 	}
 	function showGenerate() {
 		currentView = 'generate';
 		selectedKeyId = null;
-		title = 'Generate New Key';
+		$navTitle = 'Generate New Key';
 	}
 	function showDetails(keyId: string) {
 		selectedKeyId = keyId;
 		currentView = 'details';
-		title = 'Key Details';
+		$navTitle = 'Key Details';
 	}
 	function showSign() {
 		currentView = 'sign';
 		selectedKeyId = null;
-		title = 'Sign Document';
+		$navTitle = 'Sign Document';
 	}
 	function showVerify() {
 		currentView = 'verify';
 		selectedKeyId = null;
-		title = 'Verify Signature';
+		$navTitle = 'Verify Signature';
 	}
 
 	// --- Event Handlers ---
-	function handleKeyGenerated(event: CustomEvent<KeyDetails>) {
-		showDetails(event.detail.info.keyId);
+	function handleKeyGenerated(details: KeyDetails) {
+		showDetails(details.info.keyId);
 	}
-	function handleTitleUpdate(event: CustomEvent<{ title: string }>) {
-		title = event.detail.title;
-	}
+	// function handleTitleUpdate(newTitle: string) {
+	// 	navTitle = newTitle;
+	// }
 </script>
 
 <div class="app-container">
 	<header class="app-header">
-		<h1>{title}</h1>
+		<h1>{$navTitle}</h1>
 	</header>
 
 	<nav class="app-nav">
@@ -78,7 +79,7 @@
 		{:else if currentView === 'generate'}
 			<GenerateKey onGenerated={handleKeyGenerated} onCancel={showList} />
 		{:else if currentView === 'details' && selectedKeyId}
-			<KeyDetailsView keyId={selectedKeyId} onBack={showList} onUpdateTitle={handleTitleUpdate} />
+			<KeyDetailsView keyId={selectedKeyId} onBack={showList} />
 		{:else if currentView === 'sign'}
 			<SignView onBack={showList} />
 		{:else if currentView === 'verify'}

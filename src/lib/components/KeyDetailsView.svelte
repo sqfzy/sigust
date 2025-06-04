@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { invoke } from '@tauri-apps/api/core';
 	import type { KeyDetails } from '$lib/types';
+	import { navTitle } from '$lib/shared';
 
-	let { keyId, onBack, onUpdateTitle } = $props();
+	let { keyId, onBack } = $props();
 
 	let keyDetails = $state<KeyDetails | null>(null);
 	let loading = $state(true); // Initialize as loading
@@ -15,7 +16,7 @@
 			error = 'No Key ID provided.';
 			loading = false;
 			keyDetails = null; // Ensure details are cleared
-			onUpdateTitle({ title: `Key Details` });
+			$navTitle  = `Key Details`;
 			return; // Stop the effect execution here
 		}
 
@@ -24,7 +25,7 @@
 		error = null;
 		keyDetails = null; // Clear previous details immediately
 		copyButtonText = 'Copy Public Key'; // Reset button text
-		onUpdateTitle({ title: `Loading Key...` });
+			$navTitle  = `Loading Key...`;
 
 		// Define the async loading logic inside the effect
 		const loadData = async () => {
@@ -32,16 +33,16 @@
 				const result = await invoke<KeyDetails>('get_key_details', { keyId: keyId }); // Use keyId directly
 				keyDetails = result; // Assign fetched data to $state
 				if (keyDetails) {
-					onUpdateTitle({ title: `Key Details: ${keyDetails.info.name}` });
+					$navTitle  = `Key Details: ${keyDetails.info.name}`;
 				} else {
 					// Should not happen if invoke succeeds, but handle defensively
 					error = 'Failed to load key details (empty result).';
-					onUpdateTitle({ title: `Key Details Error` });
+					$navTitle  = `Key Details Error`;
 				}
 			} catch (e) {
 				console.error(`KeyDetailsView: Failed load for ${keyId}`, e);
 				error = `Failed load: ${e instanceof Error ? e.message : String(e)}`;
-				onUpdateTitle({ title: `Key Loading Error` });
+				$navTitle  = `Key Loading Error`;
 			} finally {
 				loading = false; // Update loading state
 			}
@@ -70,9 +71,7 @@
 </script>
 
 <div class="key-details-container">
-	<button class="button button-link back-button" onclick={onBack}>
-		← Back to List
-	</button>
+	<button class="button button-link back-button" onclick={onBack}> ← Back to List </button>
 
 	{#if loading}
 		<p class="info">Loading key details...</p>
